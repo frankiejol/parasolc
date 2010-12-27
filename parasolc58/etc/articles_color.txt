@@ -1,0 +1,3 @@
+fem_escola/fem_escola_10_setmana_ec.tex
+fem_escola/fem_escola_20_jocs_florals.tex
+eso/eso_80_santjordi.tex
