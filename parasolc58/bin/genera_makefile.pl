@@ -9,6 +9,8 @@ my @SECCIONS;
 my %EXT_IMG = map { $_ => 1 } qw (jpg png gif);
 my @TIPUS = qw(lowres bw paper);
 
+my %NODEP = map { $_ => 1 } qw ("portada/index.tex");
+
 my %EXT_TEX = ( tex => 1);
 my %EXT = map { $_ => 1 } keys %EXT_IMG,keys %EXT_TEX;
 
@@ -142,12 +144,15 @@ sub target_pdf {
     } else {
         print "$dir/papertex.cls: papertex.cls\n"
                 ."\tcd $dir && ln -s ../papertex.cls .\n"
+                ."\n".
+              "$dir/portada/index.tex: portada/index.tex\n"
+                ."\tcd $dir/portada && cp ../../portada/index.tex .\n"
                 ."\n";
     }
 
 	print "$pdf.pdf: ";
 	for my $ext (sort keys %$dep) {
-		print '$('.uc("$ext$nom").") ";
+		print '$('.uc("$ext$nom").") $dir/portada/index.tex ";
 	}
 	print " $dir/papertex.cls $pdf.tex";
 	print "\n"
@@ -168,6 +173,12 @@ sub make_init {
 
 	papertex();
 
+}
+
+sub portada {
+    print "portada/index.tex: \$(TEX)\n"
+        ."\t./bin/busca_noticies.pl\n"
+        ."\n";
 }
 
 sub papertex  {
@@ -230,6 +241,10 @@ while (my $file = <FIND>) {
 	my $ext = ext($file);
 	next if !$ext || !$EXT{$ext};
 
+
+    next if $NODEP{$file};
+    next if $file =~ m{portada/index.tex};
+
 	push @{$lowres{$ext}},(lowres($file));
 	push @{$bw{$ext}},(bw($file));
     push @{$paper{$ext}},(paper($file));
@@ -244,6 +259,8 @@ print_groups(\%paper,"_PAPER");
 
 print_groups(\%all);
 target_pdf($REVISTA,\%all);
+
+portada();
 
 target_pdf("lowres/$REVISTA",\%lowres,"_LOWRES");
 target_pdf("bw/$REVISTA",\%bw,"_BW");
