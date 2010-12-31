@@ -43,7 +43,7 @@ sub inputs {
 	return @input;
 }
 
-sub mostra_item {
+sub guarda_index {
 	my ($titol,$pagesof,$seccio) = @_;
 	return if ! ($titol && $pagesof && $pagesof =~ /^\d+$/ && $pagesof !~ /^0/ );
 
@@ -55,13 +55,22 @@ sub mostra_item {
 		if $PAGESOF{$pagesof};
 
 	$PAGESOF{$pagesof}=$titol;
-	print '\indexitem{'."$titol}{\\pageref{$pagesof}}\n";
+#	print '\indexitem{'."$titol}{\\pageref{$pagesof}}\n";
 	if (!$PLANA{$seccio}) {
 				$PLANA{lc($seccio)} = $pagesof;
 				$FOTO{$seccio} = "portada/img/blank.png";
 				my $foto_idx = "$seccio/img/index.png";
 				$FOTO{$seccio} = $foto_idx if -e $foto_idx;
 	}
+}
+
+sub mostra_index {
+    print '\begin{'."indexblock}{}\n";
+    for (sort { $a <=> $b } keys %PAGESOF) {
+#        	print '\indexitem{'.$PAGESOF{$_}."}{\\pageref{$_}}\n";
+        print '\indexitem{'.$PAGESOF{$_}."}{$_}\n";
+    }
+    print '\end{'."indexblock}\n\n";
 }
 
 ##############################################################
@@ -71,15 +80,13 @@ busca_seccions();
 open INDEX,">$FILE_OUT.new" or die $!;
 select(INDEX);
 
-print '\begin{'."indexblock}{}\n";
-
 for my $seccio (@SECCIONS) {
-	warn $seccio;
+
 	my @input = inputs($seccio);
 	die "No hi ha inputs per $seccio " if !@input;
 
 	for my $input (@input) {
-	  warn "\t$input\n";
+      next if $input eq 'portada/index.tex';
 	  open SECCIO,"<$input" or die "$! $input";
 	  while (<SECCIO>) {
 		next if !m[\\begin\{news\}];
@@ -97,21 +104,20 @@ for my $seccio (@SECCIONS) {
 		<SECCIO>;
 		my $pagesof;
 		for (1..3) {
-			$pagesof=<SECCIO>;
-			chomp $pagesof;
-			$pagesof =~ s/{(\d+)}.*/$1/;
+			my $line=<SECCIO>;
+			chomp $line;
+			($pagesof) = $line =~ /\{(\d+)\}/;
 			last if $pagesof && $pagesof =~ /^\d+$/;
 		}
-		warn "Error a '$seccio . $titol', pagesof = '$pagesof'"
+		warn "Error a '$input'\n'$seccio . $titol', pagesof = '$pagesof'"
 			if $pagesof && $pagesof !~ /^\d+$/;
-		warn "\t->$titol\n";
-		mostra_item($titol,$pagesof,$seccio);
+		guarda_index($titol,$pagesof,$seccio);
 	  }
 	  close SECCIO;
 	} # for inputs
 }
-print '\end{'."indexblock}\n"
-		."\n";
+
+mostra_index();
 
 print '%titol de les seccions en blanc {}'."\n";
 print '\begin{'."weatherblock}{}\n";
@@ -121,13 +127,13 @@ for (qw(fem_escola parvulari primaria eso)) {
 	my $seccio = $_;
 	$seccio =~ s/_/ /g;
 	print '\weatheritem{'
-		.$FOTO{$_}."}{$seccio}{ pàg. ".$PLANA{$_}."}\n";
+		.$FOTO{$_}."}{$seccio}{ pàg. \\pageref{".$PLANA{$_}."}}\n";
 }
-print '\end{'."weatherblock}\n"
-		."\n";
+print '\end{'."weatherblock}\n\n";
 close INDEX;
 
-my $diff = diff $FILE_OUT, "$FILE_OUT.new";
+my $diff = 1;
+$diff = diff $FILE_OUT, "$FILE_OUT.new" if -f $FILE_OUT;
 if ($diff) {
 	warn "noticies canviat\n";
 	copy("$FILE_OUT.new",$FILE_OUT) or die $!;
