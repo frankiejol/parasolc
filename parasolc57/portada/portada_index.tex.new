@@ -1,0 +1,27 @@
+\begin{indexblock}{}
+\indexitem{I Setmana de l'Educació en Comunicació}{2}
+\indexitem{Jocs Florals}{1005}
+\indexitem{El plaer de jugar i de compartir}{3}
+\indexitem{El món de la Cèl·lula}{5}
+\indexitem{Colònies de Primària}{29}
+\indexitem{Les Menines}{30}
+\indexitem{L'Ot i 3r de Primària}{15}
+\indexitem{L’espai amb Beuys i Isozaki}{22}
+\indexitem{Sortida a Santa Fe del Montseny}{19}
+\indexitem{English at SOLC}{55}
+\indexitem{Colònies d'ESO: Fenals i Camprodón}{18}
+\indexitem{Fundació Miró: Exposició Murals}{31}
+\indexitem{Aprenem a votar}{33}
+\indexitem{VideoTrams}{39}
+\indexitem{Concert a l'Escola Sant Gervasi}{60}
+\indexitem{Sant Jordi}{500}
+\end{indexblock}
+
+%titol de les seccions en blanc {}
+\begin{weatherblock}{}
+\weatheritem{fem_escola/img/index.png}{fem escola}{ pàg. 2}
+\weatheritem{parvulari/img/index.png}{parvulari}{ pàg. 3}
+\weatheritem{primaria/img/index.png}{primaria}{ pàg. 5}
+\weatheritem{eso/img/index.png}{eso}{ pàg. 18}
+\end{weatherblock}
+

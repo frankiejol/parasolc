@@ -1,0 +1,83 @@
+% Copyright (C) 2007 by Ignacio Llopis <lloptor@gmail.com>
+% -------------------------------------------------------
+% 
+% This file contains an example of what paperTeX class can do.
+% Compile it using PDFLaTeX in order to get the best results.
+% This file requires the img/ folder.
+% There are many comments that the user can uncomment in order to see 
+% how easy is to change the output style.
+%
+%
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.2
+% of this license or (at your option) any later version.
+% The latest version of this license is in:
+%
+%    http://www.latex-project.org/lppl.txt
+%
+% and version 1.2 or later is part of all distributions of LaTeX 
+% version 1999/12/01 or later.
+\documentclass[10pt,final,hyphenatedtitles]{papertex}
+\pdfminorversion=5
+\pdfobjcompresslevel=2
+\pdfcompresslevel=5
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,catalan]{babel}
+%\usepackage[T1]{fontenc}
+\usepackage{ulem}
+%\usepackage{color}
+%\usepackage{times}
+\usepackage{fancybox}
+\usepackage{wallpaper}
+%\usepackage{draftwatermark}
+%\SetWatermarkFontSize{5cm}
+
+%\definecolor{color}{cmyk}{1, 0,0, 0.5}
+
+%\renewcommand{\indexEntryFormat}{\large\rmfamily}
+%\renewcommand{\indexEntryPageTxt}{page}
+%\renewcommand{\timestampSeparator}{$\Rightarrow$}
+%\renewcommand{\innerTextFinalMark}{$\spadesuit$}
+
+
+\renewcommand{\logo}{\vspace*{-1.5cm} \mylogo{\noindent{\fontsize{35mm}{14mm} \usefont{T1}{pag}{bx}{n} \textcolor{black}{paraSOLC}}\\[3pt]}}
+%\renewcommand{\editionFormat}{\LARGE}
+%\renewcommand{\indexEntryFormat}{\normalsize\rmfamily}
+
+\renewcommand{\date}{Juny 2010}
+\renewcommand{\issue}{57}
+\author{AMPA Solc}
+\edition{Revista de l'Escola Solc}
+
+%\setlength{\columnsep}{2cm}
+
+
+%new "ragged text" feature
+\minraggedcols=3
+
+\begin{document}
+
+\selectlanguage{catalan}
+
+\include{portada/portada}
+
+\newsection{Fem Escola}
+\include{fem_escola/fem_escola}
+
+\newsection{Parvulari}
+\include{parvulari/parvulari}
+
+\newsection{Primària}
+\include{primaria/primaria}
+
+\selectlanguage{english}
+\newsection{Anglès}
+\include{angles/angles}
+
+\selectlanguage{catalan}
+\newsection{ESO}
+\include{eso/eso}
+
+
+\end{document}
